@@ -6,8 +6,13 @@ print("\"Welcome to the Dungeon\"")
 zombieHealth = 20
 playerHealth = 20
 print("Suddenly a zombie shambles from the corner")
+
 zombie = True
 player = True
+sword = False
+bow = False
+helmet = False
+
 attackAgain = "YES"
 while attackAgain == "YES" and zombie == 1 and player == 1:
     fight = input("Do you pull out your sword and shield, your bow and arrow?").upper
