@@ -1,22 +1,19 @@
 
 import random
 
-print("\"Welcome to the Dungeon\"")
-
+print("\"Welcome to the Dungeon\"\n Try to Survive")
+playOn = True
 zombieHealth = 20
 playerHealth = 20
 print("Suddenly a zombie shambles from the corner")
 
 zombie = True
 player = True
-sword = False
-bow = False
-helmet = False
-
-attackAgain = "YES"
-while attackAgain == "YES" and zombie == 1 and player == 1:
+fight = True
+while fight and zombie and player:
     fight = input("Do you pull out your sword and shield, your bow and arrow?").upper
     if fight == "SWORD" or "SWORD AND SHIELD" or "SWORD SHIELD":
+        fight = True
         swordDamage = random.randint(1,10) + 1
         swordHit = random.randint(1,20) + 3
         zombieHit = random.randint(1,20) + 1
@@ -44,7 +41,6 @@ while attackAgain == "YES" and zombie == 1 and player == 1:
             if zombieHealth2 > 0:
                 zombieHealth = zombieHealth2
                 print("The zombie has", zombieHealth2, "health remaining")
-                attackAgain = input("Do you want to attack again?").upper()
             elif zombieHealth2 <= 0:
                 print("The zombie died!")
                 zombie = False
@@ -87,15 +83,17 @@ while attackAgain == "YES" and zombie == 1 and player == 1:
             if zombieHealth2 > 0:
                 zombieHealth = zombieHealth2
                 print("The zombie has", zombieHealth2, "health remaining")
-                attackAgain = input("Do you want to attack again?").upper()
-            elif zombieHealth2 <= 0:
+
+            elif zombieHealth2 < 1:
                 print("The zombie died!")
                 zombie = False
                 break
+            fight = input("Do you want to use your bow or sword?")
+
         elif bowHit > 8 < 21:
             print("you hit the zombie")
             zombieHealth2 = zombieHealth - (bowDamage)
-            attackAgain = input("Do you want to attack again?").upper()
+            fight = input("Do you want to use your bow or sword?")
 
             if zombieHealth2 > 0:
                 zombieHealth = zombieHealth2
@@ -104,6 +102,7 @@ while attackAgain == "YES" and zombie == 1 and player == 1:
                 print("The zombie died!")
                 zombie = False
                 break
+
         if zombieHit > 12:
           playerHealth2 = playerHealth - zombieDamage
         if zombieHealth <= 0:
@@ -122,13 +121,19 @@ while attackAgain == "YES" and zombie == 1 and player == 1:
 
             if playerHealth2 > 0:
                 playerHealth2 = playerHealth
-
+                fight = input("Do you want to use your bow or sword?")
             elif playerHealth2 <= 0:
                 print("you died...")
                 player = False
                 break
+
+sword = False
+bow = False
+helmet = False
+weapon = False
 if not player:
     print("\"you anger the Old Gods with your incompetence!!!\"")
+    playOn = False
 if not zombie:
     print("You killed the zombie!!")
     print("\"You please the Old Gods\"")
@@ -142,265 +147,272 @@ if not zombie:
         if weapon == "BOW":
             print("you got a black bow, emenating a mysterious power.")
             bow = True
+            weapon = True
         if weapon == "SWORD":
             print("you got a purple sword, pulsing with energy.")
             sword = True
+            weapon = True
         helmet = False
 
-    print("\"The first room of the dungeon has been conquered. "
+print("\"The first room of the dungeon has been conquered. "
           "You have started a journey you can not go back on.\"")
-    print("To your left is a wooden door, oozing with slime. "
+print("To your left is a wooden door, oozing with slime. "
           "To your right is an open door, with mysterious noises coming out of it")
-    door = input("Which way do you choose?").upper()
-    #playerHealth = playerHealth2
-    player = 1
-    slimeHealth = 15
-    slime = 1
+door = input("Which way do you choose?").upper()
+#playerHealth = playerHealth2
+player = True
+slimeHealth = 15
+slime = True
+if playOn:
     if door == "LEFT":
         print("""You push open the door, slime sticking onto your hand as you take it off.
 As you search the room you spot a small gelatinous beast. Be prepared for a fight.""")
-        fight = input("do you strike?").upper()
-        while fight == "YES" and slime == 1 and player == 1:
-            if sword and not helmet:
-                swordDamage = random.randint(1, 10) + 3
-                swordHit = random.randint(1, 20) + 1
-                slimeHit = random.randint(1, 20) + 3
-                slimeDamage = random.randint(1, 5) + 2
+        fight = True
+        while fight and slime == 1 and player == 1:
+            fight = input("Do you pull out your sword and shield, your bow and arrow?").upper
+            if fight == "SWORD" or "SWORD AND SHIELD" or "SWORD SHIELD":
+                if sword and not helmet:
+                    swordDamage = random.randint(1, 10) + 3
+                    swordHit = random.randint(1, 20) + 1
+                    slimeHit = random.randint(1, 20) + 3
+                    slimeDamage = random.randint(1, 5) + 2
 
-                if swordHit > 10 < 22:
-                    print("you hit the slime")
-                    slimeHealth2 = slimeHealth - (swordDamage)
+                    if swordHit > 10 < 22:
+                        print("you hit the slime")
+                        slimeHealth2 = slimeHealth - (swordDamage)
+                        if slimeHealth2 >= 0:
+                            slimeHealth = slimeHealth2
+                            print("The slime has", slimeHealth2, "health remaining")
 
-                    if slimeHealth2 >= 0:
-                        slimeHealth = slimeHealth2
-                        print("The slime has", slimeHealth2, "health remaining")
-                    elif slimeHealth2 <= 0:
-                        print("The slime died!")
-                        slime = 0
+                        elif slimeHealth2 <= 0:
+                            print("The slime died!")
+                            slime = False
 
-                if slimeHit > 12:
-                    playerHealth2 = playerHealth - zombieDamage
-                    playerHealth = playerHealth2
-                    if slimeHealth2 <= 0:
-                        slimeDamage = 0
-                    if slimeDamage > 0:
-                        print("the slime hit you")
+                    if slimeHit > 12:
+                        playerHealth2 = playerHealth - zombieDamage
+                        playerHealth = playerHealth2
+                        if slimeHealth < 1:
+                            slimeDamage = 0
+                        if slimeHealth > 0:
+                            print("the slime hit you")
+                            print("You have", playerHealth2, "health left")
+                    elif slimeHit <= 12:
+                        print("the slime missed")
+                        print("You have", playerHealth, "health left")
+
+                    elif swordHit < 10:
+                        print("you missed...")
+                        playerHealth2 = playerHealth - zombieDamage
                         print("You have", playerHealth2, "health left")
-                elif slimeHit <= 12:
-                    print("the slime missed")
-                    print("You have", playerHealth, "health left")
 
-                elif swordHit < 10:
-                    print("you missed...")
-                    playerHealth2 = playerHealth - zombieDamage
-                    print("You have", playerHealth2, "health left")
+                        if playerHealth2 >= 0:
+                            playerHealth2 = playerHealth
+
+                    elif playerHealth2 <= 0:
+                        print("you died...")
+                        player = False
+                elif bow and not helmet:
+                    swordDamage = random.randint(1, 10) + 1
+                    swordHit = random.randint(1, 20) + 3
+                    slimeHit = random.randint(1, 20) + 3
+                    slimeDamage = random.randint(1, 5) + 2
+
+                    if swordHit > 8 < 22:
+                        print("you hit the slime")
+                        slimeHealth2 = slimeHealth - (swordDamage)
+
+                        if slimeHealth2 >= 0:
+                            slimeHealth = slimeHealth2
+                            print("The slime has", slimeHealth2, "health remaining")
+                        elif slimeHealth2 <= 0:
+                            print("The slime died!")
+                            slime = False
+
+                    if slimeHit > 12:
+                        playerHealth2 = playerHealth - zombieDamage
+                        playerHealth = playerHealth2
+                        if slimeHealth < 1:
+                            slime = False
+                        if slimeHealth > 0:
+                            print("the slime hit you")
+                            print("You have", playerHealth2, "health left")
+                            
+                    elif slimeHit <= 12:
+                        print("the slime missed")
+                        print("You have", playerHealth, "health left")
+
+                    elif swordHit < 8:
+                        print("you missed...")
 
                     if playerHealth2 >= 0:
-                        attackAgain = input("Do you want to attack again?").upper()
                         playerHealth2 = playerHealth
 
                     elif playerHealth2 <= 0:
                         print("you died...")
-            elif bow and not helmet:
-                swordDamage = random.randint(1, 10) + 1
-                swordHit = random.randint(1, 20) + 3
-                slimeHit = random.randint(1, 20) + 3
-                slimeDamage = random.randint(1, 5) + 2
+                        player = False
+                elif not weapon and helmet:
+                    swordDamage = random.randint(1, 10) + 3
+                    swordHit = random.randint(1, 20) + 1
+                    slimeHit = random.randint(1, 20) + 3
+                    slimeDamage = random.randint(1, 5) + 2
 
-                if swordHit > 8 < 22:
-                    print("you hit the slime")
-                    slimeHealth2 = slimeHealth - (swordDamage)
+                    if swordHit > 10 < 22:
+                        print("you hit the slime")
+                        slimeHealth2 = slimeHealth - (swordDamage)
 
-                    if slimeHealth2 >= 0:
-                        slimeHealth = slimeHealth2
-                        print("The slime has", slimeHealth2, "health remaining")
-                    elif slimeHealth2 <= 0:
-                        print("The slime died!")
-                        zombie = 0
+                        if slimeHealth2 >= 0:
+                            slimeHealth = slimeHealth2
+                            print("The slime has", slimeHealth2, "health remaining")
+                        elif slimeHealth2 <= 0:
+                            print("The slime died!")
+                            slime = False
 
-                if slimeHit > 12:
-                    playerHealth2 = playerHealth - zombieDamage
-                    playerHealth = playerHealth2
-                    if slimeHealth <= 0:
-                        slime = 0
-                    if slimeDamage > 0:
-                        print("the slime hit you")
+                    if slimeHit > 12:
+                        playerHealth2 = playerHealth - zombieDamage
+                        playerHealth = playerHealth2
+                        if slimeHealth2 <= 0:
+                            slimeDamage = 0
+                        if slimeHealth > 0:
+                            print("the slime hit you")
+                            print("You have", playerHealth2, "health left")
+                    else:
+                        print("the slime missed")
+                        print("You have", playerHealth, "health left")
+
+                    if swordHit < 10:
+                        print("you missed...")
+                        playerHealth2 = playerHealth - zombieDamage
                         print("You have", playerHealth2, "health left")
-                elif slimeHit <= 12:
-                    print("the slime missed")
-                    print("You have", playerHealth, "health left")
-
-                elif swordHit < 8:
-                    print("you missed...")
 
                     if playerHealth2 >= 0:
-                        attackAgain = input("Do you want to attack again?").upper()
                         playerHealth2 = playerHealth
 
                     elif playerHealth2 <= 0:
                         print("you died...")
-                        player = 0
-            elif not sword and helmet:
-                swordDamage = random.randint(1, 10) + 3
-                swordHit = random.randint(1, 20) + 1
-                slimeHit = random.randint(1, 20) + 3
-                slimeDamage = random.randint(1, 5) + 2
+                        player = False
+            if fight == "BOW" or "BOW AND ARROW" or "BOW ARROW" or "ARROW":
+                if sword and not helmet:
+                    swordDamage = random.randint(1, 10) + 3
+                    swordHit = random.randint(1, 20) + 1
+                    slimeHit = random.randint(1, 20) + 3
+                    slimeDamage = random.randint(1, 5) + 2
 
-                if swordHit > 10 < 22:
-                    print("you hit the slime")
-                    slimeHealth2 = slimeHealth - (swordDamage)
+                    if swordHit > 10 < 22:
+                        print("you hit the slime")
+                        slimeHealth2 = slimeHealth - (swordDamage)
+                        if slimeHealth2 >= 0:
+                            slimeHealth = slimeHealth2
+                            print("The slime has", slimeHealth2, "health remaining")
 
-                    if slimeHealth2 >= 0:
-                        slimeHealth = slimeHealth2
-                        print("The slime has", slimeHealth2, "health remaining")
-                    elif slimeHealth2 <= 0:
-                        print("The slime died!")
-                        slime = 0
+                        elif slimeHealth2 <= 0:
+                            print("The slime died!")
+                            slime = False
 
-                if slimeHit > 12:
-                    playerHealth2 = playerHealth - zombieDamage
-                    playerHealth = playerHealth2
-                    if slimeHealth2 <= 0:
-                        slimeDamage = 0
-                    if slimeDamage > 0:
-                        print("the slime hit you")
+                    if slimeHit > 12:
+                        playerHealth2 = playerHealth - zombieDamage
+                        playerHealth = playerHealth2
+                        if slimeHealth < 1:
+                            slimeDamage = 0
+                        if slimeHealth > 0:
+                            print("the slime hit you")
+                            print("You have", playerHealth2, "health left")
+                    elif slimeHit <= 12:
+                        print("the slime missed")
+                        print("You have", playerHealth, "health left")
+
+                    elif swordHit < 10:
+                        print("you missed...")
+                        playerHealth2 = playerHealth - zombieDamage
                         print("You have", playerHealth2, "health left")
-                elif slimeHit <= 12:
-                    print("the slime missed")
-                    print("You have", playerHealth, "health left")
 
-                elif swordHit < 10:
-                    print("you missed...")
-                    playerHealth2 = playerHealth - zombieDamage
-                    print("You have", playerHealth2, "health left")
+                        if playerHealth2 >= 0:
+                            playerHealth2 = playerHealth
+
+                    elif playerHealth2 <= 0:
+                        print("you died...")
+                        player = False
+                elif bow and not helmet:
+                    swordDamage = random.randint(1, 10) + 1
+                    swordHit = random.randint(1, 20) + 3
+                    slimeHit = random.randint(1, 20) + 3
+                    slimeDamage = random.randint(1, 5) + 2
+
+                    if swordHit > 8 < 22:
+                        print("you hit the slime")
+                        slimeHealth2 = slimeHealth - (swordDamage)
+
+                        if slimeHealth2 >= 0:
+                            slimeHealth = slimeHealth2
+                            print("The slime has", slimeHealth2, "health remaining")
+                        elif slimeHealth2 <= 0:
+                            print("The slime died!")
+                            slime = False
+
+                    if slimeHit > 12:
+                        playerHealth2 = playerHealth - zombieDamage
+                        playerHealth = playerHealth2
+                        if slimeHealth < 1:
+                            slime = False
+                        if slimeHealth > 0:
+                            print("the slime hit you")
+                            print("You have", playerHealth2, "health left")
+
+                    elif slimeHit <= 12:
+                        print("the slime missed")
+                        print("You have", playerHealth, "health left")
+
+                    elif swordHit < 8:
+                        print("you missed...")
 
                     if playerHealth2 >= 0:
-                        attackAgain = input("Do you want to attack again?").upper()
                         playerHealth2 = playerHealth
 
                     elif playerHealth2 <= 0:
                         print("you died...")
-            elif not sword and  not helmet:
-                swordDamage = random.randint(1, 10) + 1
-                swordHit = random.randint(1, 20) + 3
-                slimeHit = random.randint(1, 20) + 3
-                slimeDamage = random.randint(1, 5) + 2
+                        player = False
+                elif not weapon and helmet:
+                    swordDamage = random.randint(1, 10) + 3
+                    swordHit = random.randint(1, 20) + 1
+                    slimeHit = random.randint(1, 20) + 3
+                    slimeDamage = random.randint(1, 5) + 2
 
-                if swordHit > 8 < 22:
-                    print("you hit the slime")
-                    slimeHealth2 = slimeHealth - (swordDamage)
+                    if swordHit > 10 < 22:
+                        print("you hit the slime")
+                        slimeHealth2 = slimeHealth - (swordDamage)
 
-                    if slimeHealth2 >= 0:
-                        slimeHealth = slimeHealth2
-                        print("The slime has", slimeHealth2, "health remaining")
-                    elif slimeHealth2 <= 0:
-                        print("The slime died!")
-                        zombie = 0
+                        if slimeHealth2 >= 0:
+                            slimeHealth = slimeHealth2
+                            print("The slime has", slimeHealth2, "health remaining")
+                        elif slimeHealth2 <= 0:
+                            print("The slime died!")
+                            slime = False
 
-                if slimeHit > 12:
-                    playerHealth2 = playerHealth - zombieDamage
-                    playerHealth = playerHealth2
-                    if slimeHealth <= 0:
-                        slime = 0
-                    if slimeDamage > 0:
-                        print("the slime hit you")
+                    if slimeHit > 12:
+                        playerHealth2 = playerHealth - zombieDamage
+                        playerHealth = playerHealth2
+                        if slimeHealth2 <= 0:
+                            slimeDamage = 0
+                        if slimeHealth > 0:
+                            print("the slime hit you")
+                            print("You have", playerHealth2, "health left")
+                    else:
+                        print("the slime missed")
+                        print("You have", playerHealth, "health left")
+
+                    if swordHit < 10:
+                        print("you missed...")
+                        playerHealth2 = playerHealth - zombieDamage
                         print("You have", playerHealth2, "health left")
-                else:
-                    print("the slime missed")
-                    print("You have", playerHealth, "health left")
-
-                if swordHit < 8:
-                    print("you missed...")
 
                     if playerHealth2 >= 0:
-                        attackAgain = input("Do you want to attack again?").upper()
                         playerHealth2 = playerHealth
 
                     elif playerHealth2 <= 0:
                         print("you died...")
-                        player = 0
-            elif sword and helmet:
-                swordDamage = random.randint(1, 10) + 3
-                swordHit = random.randint(1, 20) + 1
-                slimeHit = random.randint(1, 20) + 3
-                slimeDamage = random.randint(1, 5) + 2
-
-                if swordHit > 10 < 22:
-                    print("you hit the slime")
-                    slimeHealth2 = slimeHealth - (swordDamage)
-
-                    if slimeHealth2 >= 0:
-                        slimeHealth = slimeHealth2
-                        print("The slime has", slimeHealth2, "health remaining")
-                    elif slimeHealth2 <= 0:
-                        print("The slime died!")
-                        slime = 0
-
-                if slimeHit > 12:
-                    playerHealth2 = playerHealth - zombieDamage
-                    playerHealth = playerHealth2
-                    if slimeHealth2 <= 0:
-                        slimeDamage = 0
-                    if slimeDamage > 0:
-                        print("the slime hit you")
-                        print("You have", playerHealth2, "health left")
-                else:
-                    print("the slime missed")
-                    print("You have", playerHealth, "health left")
-
-                if swordHit < 10:
-                    print("you missed...")
-                    playerHealth2 = playerHealth - zombieDamage
-                    print("You have", playerHealth2, "health left")
-
-                    if playerHealth2 >= 0:
-                        attackAgain = input("Do you want to attack again?").upper()
-                        playerHealth2 = playerHealth
-
-                    elif playerHealth2 <= 0:
-                        print("you died...")
-            elif bow and helmet:
-                swordDamage = random.randint(1, 10) + 1
-                swordHit = random.randint(1, 20) + 3
-                slimeHit = random.randint(1, 20) + 3
-                slimeDamage = random.randint(1, 5) + 2
-
-                if swordHit > 8 < 22:
-                    print("you hit the slime")
-                    slimeHealth2 = slimeHealth - (swordDamage)
-
-                    if slimeHealth2 >= 0:
-                        slimeHealth = slimeHealth2
-                        print("The slime has", slimeHealth2, "health remaining")
-                    elif slimeHealth2 <= 0:
-                        print("The slime died!")
-                        zombie = 0
-
-                if slimeHit > 12:
-                    playerHealth2 = playerHealth - zombieDamage
-                    playerHealth = playerHealth2
-                    if slimeHealth <= 0:
-                        slime = 0
-                    if slimeDamage > 0:
-                        print("the slime hit you")
-                        print("You have", playerHealth2, "health left")
-                elif slimeHit <= 12:
-                    print("the slime missed")
-                    print("You have", playerHealth, "health left")
-
-                elif swordHit < 8:
-                    print("you missed...")
-
-                    if playerHealth2 >= 0:
-                        attackAgain = input("Do you want to attack again?").upper()
-                        playerHealth2 = playerHealth
-
-                    elif playerHealth2 <= 0:
-                        print("you died...")
-                        player = 0
-                        break
-    if player == 0:
+                        player = False
+            
+    if not player:
         print("\"You are a failure to your family and deserve nothing!\"")
-    if slime == 0:
+    if not slime:
         print("\"You have conquered yet another room in this dungeon\"")
         print("You hear a \'clink\' in the corner of the room. You see its a bag of coins...")
