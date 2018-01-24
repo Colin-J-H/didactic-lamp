@@ -96,6 +96,7 @@ def double_down_phase2():
             surrender()
         else:
             double_down_phase1()
+    initial_phase()
 
 
 # the initial drawing of cards
@@ -140,3 +141,4 @@ def main():
 
 
 main()
+
