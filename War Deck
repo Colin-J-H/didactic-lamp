@@ -1,0 +1,72 @@
+import random
+
+
+class Card:
+    # CONSTRUCTORS
+    def __init__(self, suit, number):
+        self.suit = suit
+        self.number = number
+        self.textValue = self.set_text_value()
+        self.gameValue = number
+
+    # setters
+
+    def set_suit(self, suit):
+        self.suit = suit
+
+    #def set_game_value:
+        #if number > 9:
+
+
+
+    def set_text_value(self):
+        if self.number == 14:
+            return "Ace"
+        elif self.number == 11:
+            return "Jack"
+        elif self.number == 12:
+            return "Queen"
+        elif self.number == 13:
+            return "King"
+        else:
+            return self.number
+    # getters
+
+    def set_suit(self, suit):
+        return self.suit
+
+    def set_numbers(self, numbers):
+        return self.number
+
+    def __str__(self):
+        return "({}, {})".format(self.suit,self.textValue)
+
+
+class Deck:
+    # Constructors
+    def __init__(self, number_decks = 1):
+        self.deck = []
+        self.number_decks = number_decks
+        self.fill_deck()
+
+    # setters
+    def fill_deck(self):
+        suits = ("Heart", "Diamond", "Club", "Spade")
+        for decks in range(0, self.number_decks):
+            for suit in suits:
+                for numbers in range(2, 15):
+                    card = Card(suit, numbers)
+                    self.deck.append(card)
+
+    def shuffle(self):
+        random.shuffle(self.deck)
+
+    # getters
+    def print_deck(self):
+        for card in self.deck:
+            print(card)
+
+    def deal_card(self):
+        return self.deck.pop(0)
+
+
