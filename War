@@ -1,3 +1,4 @@
+
 from WarDeck import *
 import time
 # ==============================
@@ -7,13 +8,16 @@ for i in range(10):
     i += 1
 # ==============================
 print("Welcome to the War table. Good luck...")
+time.sleep(.5)
 # ==============================
-
+cash_remaining = True
 empty = []
 cash = 1000
 bet = 0
 play_again = True
 # ==============================
+
+
 def new_deck():
     deck = Deck(6)
     for i in range(7):
@@ -28,59 +32,111 @@ def play_again_function():
         main()
     else:
         print("See you soon...")
-        playing = False
+
 
 def bet_function():
     global bet
     global cash
     print("You have {} cash".format(cash))
     bet = int(input("How much do you want to bet"))
+    if bet > cash:
+        print("You dont have that much try again")
+        time.sleep(.25)
+        bet = 0
+        bet_function()
+
+    if bet < 0:
+        print("why?")
+        time.sleep(.25)
+        bet = 0
+        bet_function()
 
 
 def cash_limit():
     global cash
+    global cash_remaining
     if cash <= 0:
-        print("get out of ny casino scrub!")
+        print("get out of my casino scrub!")
+        time.sleep(.25)
+        cash_remaining = False
+
+
+def surrender():
+    global cash
+    global bet
+    bet /= 2
+    cash -= bet
+
+
+def double_down_phase1():
+    global bet
+    bet *= 2
+    for i in range(4):
+        empty.append(deck.deal_card())
+        i += 1
+    double_down_phase2()
+
+
+def double_down_phase2():
+    global cash
+    players_card = deck.deal_card()
+    dealers_card = deck.deal_card()
+    if players_card.gameValue > dealers_card.gameValue:
+        print("your card {} won over".format(players_card.textValue, dealers_card.textValue))
+        time.sleep(.25)
+        cash += bet
+    elif players_card.gameValue < dealers_card.gameValue:
+        print("their card {} won over {}".format(dealers_card.textValue, players_card.textValue))
+        time.sleep(.25)
+        cash -= bet
+    elif players_card.gameValue == dealers_card.gameValue:
+        surrender_or_double_down = input(
+            "Do you want to surrender(lose half your bet) or double down(double your bet)").lower()
+        if surrender_or_double_down == "surrender":
+            surrender()
+        else:
+            double_down_phase1()
 
 
 # the initial drawing of cards
 def initial_phase():
     new_deck()
     playing = True
-    while playing:
-        cash_limit()
+    while playing and cash_remaining:
+        global cash
+        if cash < 1:
+            print("get out of my casino scrub!")
+            break
         bet_function()
         players_card = deck.deal_card()
         dealers_card = deck.deal_card()
-        print(players_card.gameValue)
+        a = dealers_card.textValue
+        print("this is your card" , players_card.textValue)
+        time.sleep(.25)
         if players_card.gameValue > dealers_card.gameValue:
-            global cash
-            global bet
-            print("your card {} won over".format(players_card.textValue,dealers_card.textValue))
+            print("your card {} won over".format(players_card.textValue, a))
+            time.sleep(.25)
             cash += bet
         elif players_card.gameValue < dealers_card.gameValue:
-            # cash
             print("their card {} won over {}".format(dealers_card.textValue,players_card.textValue))
+            time.sleep(.25)
             cash -= bet
         elif players_card.gameValue == dealers_card.gameValue:
             surrender_or_double_down = input("Do you want to surrender(lose half your bet) or double down(double your bet)").lower()
             if surrender_or_double_down == "surrender":
-                # global cash
-                bet /= 2
-                cash -= bet
-                while playing:
-                    initial_phase()
+                surrender()
             else:
-                # global bet
-                bet *= 2
-                for i in range(4):
-                    empty.append(deck.deal_card())
-                    i += 1
-                    initial_phase()
+                double_down_phase1()
         if len(deck.deck) < 1:
             play_again_function()
 
+        if not cash_remaining:
+            cash_limit()
+
+
 def main():
     initial_phase()
+# =====================
+
 
 main()
